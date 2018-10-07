@@ -19,4 +19,10 @@ steps:
 - script: docker push $(dockerId)/$(imageName)
   displayName: 'Docker Push'
 
+- script: docker image tag $(dockerId)/$(imageName) $(dockerIdKTHSE)/$(imageName)
+  displayName: 'KTHse: tag image for push to KTHse Github'
+
+- script: docker push $(dockerIdKTHSE)/$(imageName)
+  displayName: 'KTHse: Push Docker image to KTHse Github'
+
  
