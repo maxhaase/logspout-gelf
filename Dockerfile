@@ -17,7 +17,17 @@ RUN curl -fSL -o logspout.tar.gz "https://github.com/gliderlabs/logspout/archive
     && mv logspout-${LOGSPOUT_VERSION} /go/src/github.com/gliderlabs/logspout
 
 WORKDIR /go/src/github.com/gliderlabs/logspout
-RUN echo 'import ( _ "github.com/micahhausler/logspout-gelf" )' >> /go/src/github.com/gliderlabs/logspout/modules.go
+RUN echo 'import ( _ "github.com/gliderlabs/logspout/adapters/raw" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/gliderlabs/logspout/adapters/syslog" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/gliderlabs/logspout/httpstream" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/gliderlabs/logspout/routesapi" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/gliderlabs/logspout/transports/tcp" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/gliderlabs/logspout/transports/udp" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/gliderlabs/logspout/transports/tls" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/micahhausler/logspout-gelf" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+
+
+
 RUN go get -d -v ./...
 RUN go build -v -ldflags "-X main.Version=$(cat VERSION)" -o ./bin/logspout
 
