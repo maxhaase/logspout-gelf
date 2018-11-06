@@ -24,7 +24,7 @@ RUN echo 'import ( _ "github.com/gliderlabs/logspout/adapters/raw" )' >> /go/src
     && echo 'import ( _ "github.com/gliderlabs/logspout/transports/tcp" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
     && echo 'import ( _ "github.com/gliderlabs/logspout/transports/udp" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
     && echo 'import ( _ "github.com/gliderlabs/logspout/transports/tls" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
-    && echo 'import ( _ "github.com/mictsi/logspout-gelf-tls/blob/master/" )' >> /go/src/github.com/gliderlabs/logspout/modules.go
+    && echo 'import ( _ "github.com/micahhausler/logspout-gelf" )' >> /go/src/github.com/gliderlabs/logspout/modules.go
 
 
 
