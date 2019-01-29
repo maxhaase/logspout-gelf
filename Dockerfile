@@ -10,7 +10,7 @@ EXPOSE 80
 
 RUN apk --no-cache add curl git gcc musl-dev && \
     apk --no-cache add --update go build-base git mercurial ca-certificates
-RUN curl -fSL -o logspout.tar.gz "https://github.com/gliderlabs/logspout/archive/v${LOGSPOUT_VERSION}.tar.gz" \
+RUN curl -fSL -o logspout.tar.gz "https://github.com/gliderlabs/logspout/releases/download/v${LOGSPOUT_VERSION}/logspout_v${LOGSPOUT_VERSION}.tgz" \
     && echo "$LOGSPOUT_DOWNLOAD_SHA256 *logspout.tar.gz" | sha256sum -c - \
     && tar -zxvf logspout.tar.gz \
     && rm logspout.tar.gz \
