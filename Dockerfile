@@ -7,7 +7,7 @@ WORKDIR /go/src
 VOLUME /mnt/routes
 EXPOSE 80
 
-RUN apk --no-cache add --update curl git gcc musl-dev go build-base git mercurial ca-certificates
+RUN apk --no-cache add --update curl git gcc musl-dev go build-base git mercurial
 RUN curl -fSL -o logspout_v${LOGSPOUT_VERSION}.tar.gz "https://github.com/gliderlabs/logspout/archive/v${LOGSPOUT_VERSION}.tar.gz" \
     && tar -zxvf logspout_v${LOGSPOUT_VERSION}.tar.gz \
     && rm logspout_v${LOGSPOUT_VERSION}.tar.gz \
@@ -30,5 +30,6 @@ RUN go get -d -v ./...
 RUN go build -v -ldflags "-X main.Version=$(cat VERSION)" -o ./bin/logspout
 
 FROM alpine:latest
+RUN apk --no-cache add --update ca-certificates
 COPY --from=build /go/src/github.com/gliderlabs/logspout/bin/logspout /go/bin/logspout
 ENTRYPOINT ["/go/bin/logspout"]
