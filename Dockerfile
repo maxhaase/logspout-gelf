@@ -9,7 +9,7 @@ VOLUME /mnt/routes
 EXPOSE 80
 
 RUN apk --no-cache add --update curl git gcc musl-dev go build-base git mercurial ca-certificates
-RUN curl -fSL -o logspout.tar.gz "https://github.com/gliderlabs/logspout/releases/download/v${LOGSPOUT_VERSION}/logspout_v${LOGSPOUT_VERSION}.tgz" \
+RUN curl -fSL -o logspout_v${LOGSPOUT_VERSION}.tgz "https://github.com/gliderlabs/logspout/releases/download/v${LOGSPOUT_VERSION}/logspout_v${LOGSPOUT_VERSION}.tgz" \
     && echo "$LOGSPOUT_DOWNLOAD_SHA256 logspout_v${LOGSPOUT_VERSION}.tgz" | sha256sum -c - \
     && tar -zxvf logspout_v${LOGSPOUT_VERSION}.tgz \
     && rm logspout_v${LOGSPOUT_VERSION}.tgz \
