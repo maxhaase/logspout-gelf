@@ -1,14 +1,15 @@
 FROM golang:alpine as build
 MAINTAINER timo.taskinen@vincit.fi
 LABEL maintainer "timo.taskinen@vincit.fi"
-ENV LOGSPOUT_VERSION=3.2.5
-ENV LOGSPOUT_DOWNLOAD_SHA256=22a8f1fbce7298c16b6ab7401216d8bf4c3b7dc710889371d434a123d5d4d0a2
+ENV LOGSPOUT_VERSION=3.2.6
+ENV LOGSPOUT_DOWNLOAD_SHA256=564219534d00a92e4e96a25abf00dbf26ea8608d58182d353e6d9154119977e3
 RUN mkdir -p /go/src
 WORKDIR /go/src
 VOLUME /mnt/routes
 EXPOSE 80
 
-RUN apk --no-cache add curl git gcc musl-dev
+RUN apk --no-cache add curl git gcc musl-dev && \
+    apk --no-cache add --update go build-base git mercurial ca-certificates
 RUN curl -fSL -o logspout.tar.gz "https://github.com/gliderlabs/logspout/archive/v${LOGSPOUT_VERSION}.tar.gz" \
     && echo "$LOGSPOUT_DOWNLOAD_SHA256 *logspout.tar.gz" | sha256sum -c - \
     && tar -zxvf logspout.tar.gz \
@@ -24,7 +25,9 @@ RUN echo 'import ( _ "github.com/gliderlabs/logspout/adapters/raw" )' >> /go/src
     && echo 'import ( _ "github.com/gliderlabs/logspout/transports/tcp" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
     && echo 'import ( _ "github.com/gliderlabs/logspout/transports/udp" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
     && echo 'import ( _ "github.com/gliderlabs/logspout/transports/tls" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
-    && echo 'import ( _ "github.com/micahhausler/logspout-gelf" )' >> /go/src/github.com/gliderlabs/logspout/modules.go
+    && echo 'import ( _ "github.com/gliderlabs/logspout/healthcheck" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/gliderlabs/logspout/adapters/multiline" )' >> /go/src/github.com/gliderlabs/logspout/modules.go \
+    && echo 'import ( _ "github.com/karlvr/logspout-gelf" )' >> /go/src/github.com/gliderlabs/logspout/modules.go
 
 
 
