@@ -14,18 +14,33 @@ Remember to set the hostname of the container to something meaningfull, because 
 
 ### Docker Compose example
 
-You could use this image with the following docker-compose file:
+You could use this image with the following docker-compose file for unencrypted gelf messages over udp:
 
 ```
-version: '2'
+version: '3'
 
 services:
   logspout:
-    image: vincit/logspout-gelf
+    image: kthse/logspout-gelf-tls:108
     hostname: my.message.source
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: gelf://my.log.server:12201
+    restart: unless-stopped
+```
+
+or the following for sending gelf message over TLS+TCP: 
+
+```
+version: '3'
+
+services:
+  logspout:
+    image: kthse/logspout-gelf-tls:latest
+    hostname: my.message.source
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: gelf+tls://my.log.server:12201
     restart: unless-stopped
 ```
 
